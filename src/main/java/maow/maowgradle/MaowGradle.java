@@ -12,6 +12,8 @@ import java.nio.file.Files;
 public class MaowGradle implements Plugin<Project> {
     @Override
     public void apply(@NotNull Project project) {
+        MaowGradlePluginExtension extension = project.getExtensions().create("minecraft", MaowGradlePluginExtension.class);
+
         File libsDir = new File("libs");
         if (!libsDir.exists()) {
             try {
@@ -26,5 +28,8 @@ public class MaowGradle implements Plugin<Project> {
         project.getTasks().register("remapJar", RemapJarTask.class);
         project.getTasks().register("grabDependencies", GrabDependenciesTask.class);
         project.getTasks().register("initMaowGradle", InitTask.class);
+
+        InitTask initTask = (InitTask) project.getTasks().getByName("initMaowGradle");
+        initTask.doInit();
     }
 }
