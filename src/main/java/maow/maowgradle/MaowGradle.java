@@ -33,6 +33,8 @@ public class MaowGradle implements Plugin<Project> {
 
         InitTask init = (InitTask) project.getTasks().getByName("initMaowGradle");
         init.setVersion(extension.getVersion());
+        init.setIntermediaryMappings(extension.getIntermediaryMappings());
+        init.setMappings(extension.getMappings());
         init.doInit();
     }
 }
