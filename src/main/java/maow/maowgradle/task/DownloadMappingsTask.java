@@ -3,7 +3,6 @@ package maow.maowgradle.task;
 import maow.maowgradle.util.HttpUtil;
 import maow.maowgradle.util.IOUtil;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;

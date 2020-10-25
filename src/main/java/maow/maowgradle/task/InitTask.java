@@ -1,46 +1,27 @@
 package maow.maowgradle.task;
 
 import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
 
 public class InitTask extends DefaultTask {
-    private String version;
-    private String mappings;
-    private String intermediaryMappings;
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public void setMappings(String mappings) {
-        this.mappings = mappings;
-    }
-
-    public void setIntermediaryMappings(String intermediaryMappings) {
-        this.intermediaryMappings = intermediaryMappings;
-    }
-
-    @TaskAction
-    public void doInit() {
-        downloadJar();
-        downloadMappings();
-        remapJar();
-        grabDependencies();
+    public void doInit(String version, String mappings, String intermediaryMappings) {
+        downloadJar(version);
+        downloadMappings(mappings, intermediaryMappings);
+        remapJar(version);
+        grabDependencies(version);
         getProject().getLogger().lifecycle("- Initialization finished.");
     }
 
     // Utilities
 
-    private void downloadJar() {
+    private void downloadJar(String version) {
         DownloadJarTask downloadJarTask = (DownloadJarTask) getProject().getTasks().getByName("downloadJar");
         downloadJarTask.setVersion(version);
         downloadJarTask.downloadJar();
     }
 
-    private void downloadMappings() {
+    private void downloadMappings(String mappings, String intermediaryMappings) {
         DownloadMappingsTask downloadMappingsTask = (DownloadMappingsTask) getProject().getTasks().getByName("downloadMappings");
         if (intermediaryMappings.equals("")) {
             downloadMappingsTask.setIntermediaryUrl(intermediaryMappings);
@@ -51,7 +32,7 @@ public class InitTask extends DefaultTask {
         downloadMappingsTask.downloadMappings();
     }
 
-    private void remapJar() {
+    private void remapJar(String version) {
         RemapJarTask remapJarTask = (RemapJarTask) getProject().getTasks().getByName("remapJar");
         remapJarTask.setIntermediaryFile(new File("mappings/intermediary.tiny"));
         remapJarTask.setMappingsFile(new File("mappings/mappings.tiny"));
@@ -59,7 +40,7 @@ public class InitTask extends DefaultTask {
         remapJarTask.remapJar();
     }
 
-    private void grabDependencies() {
+    private void grabDependencies(String version) {
         GrabDependenciesTask grabDependenciesTask = (GrabDependenciesTask) getProject().getTasks().getByName("grabDependencies");
         grabDependenciesTask.setVersion(version);
         grabDependenciesTask.grabDependencies();
