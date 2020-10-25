@@ -15,6 +15,14 @@ public class InitTask extends DefaultTask {
         this.version = version;
     }
 
+    public void setMappings(String mappings) {
+        this.mappings = mappings;
+    }
+
+    public void setIntermediaryMappings(String intermediaryMappings) {
+        this.intermediaryMappings = intermediaryMappings;
+    }
+
     @TaskAction
     public void doInit() {
         downloadJar();
