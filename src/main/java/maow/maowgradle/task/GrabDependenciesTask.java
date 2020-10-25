@@ -4,7 +4,6 @@ import maow.maowgradle.util.VersionUtil;
 import maow.maowgradle.util.data.ClientJson;
 import maow.maowgradle.util.data.VersionManifest;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
 
 public class GrabDependenciesTask extends DefaultTask {

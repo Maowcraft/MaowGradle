@@ -3,6 +3,7 @@ package maow.maowgradle;
 import maow.maowgradle.task.*;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,9 +11,7 @@ import java.nio.file.Files;
 
 public class MaowGradle implements Plugin<Project> {
     @Override
-    public void apply(Project project) {
-        MaowGradlePluginExtension extension = (MaowGradlePluginExtension) project.getExtensions().getByName("minecraft");
-
+    public void apply(@NotNull Project project) {
         File libsDir = new File("libs");
         if (!libsDir.exists()) {
             try {
@@ -26,12 +25,6 @@ public class MaowGradle implements Plugin<Project> {
         project.getTasks().register("downloadMappings", DownloadMappingsTask.class);
         project.getTasks().register("remapJar", RemapJarTask.class);
         project.getTasks().register("grabDependencies", GrabDependenciesTask.class);
-
         project.getTasks().register("initMaowGradle", InitTask.class);
-
-        project.getLogger().lifecycle("[ MAOW GRADLE ]\n");
-
-        InitTask init = (InitTask) project.getTasks().getByName("initMaowGradle");
-        init.doInit(extension.getVersion(), extension.getMappings(), extension.getIntermediaryMappings());
     }
 }

@@ -1,15 +1,19 @@
 package maow.maowgradle.task;
 
+import maow.maowgradle.MaowGradlePluginExtension;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
 
 public class InitTask extends DefaultTask {
-    public void doInit(String version, String mappings, String intermediaryMappings) {
-        downloadJar(version);
-        downloadMappings(mappings, intermediaryMappings);
-        remapJar(version);
-        grabDependencies(version);
+    @TaskAction
+    public void doInit() {
+        MaowGradlePluginExtension extension = getProject().getExtensions().create("minecraft", MaowGradlePluginExtension.class);
+        downloadJar(extension.getVersion());
+        downloadMappings(extension.getMappings(), extension.getIntermediaryMappings());
+        remapJar(extension.getVersion());
+        grabDependencies(extension.getVersion());
         getProject().getLogger().lifecycle("- Initialization finished.");
     }
 
